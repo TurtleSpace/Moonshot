@@ -1,8 +1,11 @@
 #include once "OBJECT.BI"
 #include once "SCENE.BI"
 #include once "SPLINTER.BI"
+#include once "BSPTREE.BI"
 
 Dim sc as Scene
+sc_init(@sc)    ' Initialize scene callbacks and defaults
+
 sc.objMax = 5
 sc.obj = CAllocate(sc.objMax * SizeOf(RenderedObject))
 
@@ -10,6 +13,15 @@ sc.obj = CAllocate(sc.objMax * SizeOf(RenderedObject))
 For i as Integer = 0 to sc.objmax - 1
   sc.obj[i] = 0
 Next i
+
+' In order to support collisions, each scene needs a collision model. Splinter allows
+' collision models to be swapped at any time, and belong to the scene, allowing different
+' models for each scene, or the ability to switch models depending on scene complexity.
+' Here, we will use a BSP (Binary Space Partitioning) tree which is provided with Splinter:
+Dim as BSPCollisionModel bspcl    ' Model we are using for collision
+BSPCollisionModelInit(@bspcl)     ' Initialize model callbacks and defaults
+bspcl.maxDepth = 5                ' 4 by 4 grid
+'sc.collisionModel = @bspcl        ' Apply model to scene
 
 sc.name = "Testing"
 

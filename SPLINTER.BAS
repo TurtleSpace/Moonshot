@@ -11,36 +11,6 @@
 Using FB '' ' Keyboard constants
 #endif
 
-Type SingleLink
-  nextLink as SingleLink Ptr = 0
-End Type
-
-Function sc_addObject(sc as Scene Ptr, ob as RenderedObject Ptr) as Integer
-  If sc->objCount = sc->objMax Then Return -1
-
-  sc->obj[sc->objCount] = ob
-  sc->objCount += 1
-  
-  Return 0
-End Function
-
-Function sc_removeObject(sc as Scene Ptr, ob as RenderedObject Ptr) as Integer
-  If sc->objCount = 0 then Return -1
-  Dim i as Integer
-
-  For i = 1 To sc->objCount - 1
-    if sc->obj[i] = ob Then
-      sc->obj[i] = 0
-      sc->objLast = i
-    End If
-  Next i
-  sc->objCount -= 1
-
-  Return 0
-End Function
-
-' ------------
-
 'Draws an object to the framebuffer
 Sub sc_drawObject(sc as Scene Ptr, ob as RenderedObject Ptr)
   Dim axis as PolarPoint Ptr Ptr
@@ -78,15 +48,9 @@ Sub vsyncLoop(sc as Scene Ptr, px as Integer, py as Integer, _
       sc->active = False
     End If
 
-    Dim as BSPNode Ptr bsp = createBSPNode(sc)
+    ' TODO: Collision model handling
+    sc->collisionModel->checkCollisions(sc)
 
-    ' Add each object to the BSP tree:
-    For i as Integer = 0 To sc->ObjCount - 1
-      addToBSPNode(sc, bsp, sc->obj[i])
-    Next i
-    
-    destroyBSPNode(bsp)
-    
     ScreenLock
     ' TODO: BSP / Quadtree screen blanking:
     Line sc->buffer, (0, 0)-(vx, vy), 16, BF
