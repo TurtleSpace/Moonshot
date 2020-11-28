@@ -1,3 +1,5 @@
 *.o
 *.GDT
 *.GPR
+*.EXE
+*.COM
