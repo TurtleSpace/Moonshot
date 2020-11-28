@@ -21,3 +21,4 @@ End Type
 Declare Function sc_addObject(sc as Scene Ptr, ob as RenderedObject Ptr) as Integer
 Declare Function sc_removeObject(sc as Scene Ptr, ob as RenderedObject Ptr) as Integer
 Declare Sub sc_init(sc as Scene Ptr)
+Declare Sub sc_destroy(sc as Scene Ptr)

@@ -18,9 +18,9 @@ Next i
 ' collision models to be swapped at any time, and belong to the scene, allowing different
 ' models for each scene, or the ability to switch models depending on scene complexity.
 ' Here, we will use a BSP (Binary Space Partitioning) tree which is provided with Splinter:
-Dim as BSPCollisionModel bspcl    ' Model we are using for collision
-BSPCollisionModelInit(@bspcl)     ' Initialize model callbacks and defaults
-bspcl.maxDepth = 5                ' 4 by 4 grid
+'Dim as BSPCollisionModel bspcl    ' Model we are using for collision
+'BSPCollisionModelInit(@bspcl)     ' Initialize model callbacks and defaults
+'bspcl.maxDepth = 5                ' 4 by 4 grid
 'sc.collisionModel = @bspcl        ' Apply model to scene
 
 sc.name = "Testing"
@@ -54,3 +54,4 @@ vsyncLoop(@sc, 320, 240, 8, 352, 240, 32, 32)
 
 Deallocate(ob.axis)
 
+sc_destroy(@sc)

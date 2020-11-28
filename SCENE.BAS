@@ -27,7 +27,11 @@ End Function
 Sub _sc_collisionStub(sc as Scene Ptr) : End Sub ' Do nothing
 
 Sub sc_init(sc as Scene Ptr)
-  Dim as SceneCollisionModel dummy_cl
-  dummy_cl.checkCollisions = @_sc_collisionStub
-  sc->collisionModel = @dummy_cl
+  Dim as SceneCollisionModel Ptr dummy_cl = Allocate(SizeOf(SceneCollisionModel))
+  dummy_cl->checkCollisions = @_sc_collisionStub
+  sc->collisionModel = dummy_cl
+End Sub
+
+Sub sc_destroy(sc as Scene Ptr)
+  Deallocate(sc->collisionModel)
 End Sub
