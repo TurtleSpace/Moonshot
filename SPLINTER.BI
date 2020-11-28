@@ -1,3 +1,6 @@
+#include once "SCENE.BI"
+#include once "OBJECT.BI"
+
 Declare Sub vsyncLoop(sc as Scene Ptr, px as Integer, py as Integer, _
  pd as Integer, vx as Integer, vy as Integer, ox as Integer, oy as Integer)
 
@@ -5,4 +8,5 @@ Declare Sub vsyncLoop(sc as Scene Ptr, px as Integer, py as Integer, _
 ' vx and vy is the resolution of the virtual framebuffer, and ox and oy are
 ' the offset of the physical video output relative to the top left of the
 ' virtual framebuffer.
+
 

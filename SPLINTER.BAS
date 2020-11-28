@@ -5,9 +5,7 @@
 #include once "OBJECT.BI"
 #include once "SCENE.BI"
 #include once "FBGFX.BI"
-
-'#define nextAxis ob->axis[i + 1]
-'#define firstAxis ob->axis[0]
+#include once "SPLINTER.BI"
 
 #if __FB_LANG__ = "fb"
 Using FB '' ' Keyboard constants
@@ -53,25 +51,18 @@ Sub sc_drawObject(sc as Scene Ptr, ob as RenderedObject Ptr)
   ' rectangular form, then drawing lines in between them:
   For i as Integer = 0 To termAxis
     With ob->axis[i]
-      x1 = (.r * ob->scale) * cos(.theta) + ob->x
-      y1 = (.r * ob->scale) * sin(.theta) + ob->y
+      x1 = (.r * ob->scale) * cos(.theta + ob->theta) + ob->x
+      y1 = (.r * ob->scale) * sin(.theta + ob->theta) + ob->y
     End With
 
     ' use the next point:
     With ob->axis[i + 1]
-      x2 = (.r * ob->scale) * cos(.theta) + ob->x
-      y2 = (.r * ob->scale) * sin(.theta) + ob->y
+      x2 = (.r * ob->scale) * cos(.theta + ob->theta) + ob->x
+      y2 = (.r * ob->scale) * sin(.theta + ob->theta) + ob->y
     End With
     
     Line sc->buffer, (x1, y1)-(x2, y2), ob->color
   Next i
-  
-      ' Final object, return to first point:
-   '   With ob->axis[0]
-   '     x2 = .r * cos(.theta) + ob->x
-   '     y2 = .r * sin(.theta) + ob->y
-   '   End With
-   ' Else
 End Sub
 
 Sub vsyncLoop(sc as Scene Ptr, px as Integer, py as Integer, _
@@ -87,9 +78,18 @@ Sub vsyncLoop(sc as Scene Ptr, px as Integer, py as Integer, _
       sc->active = False
     End If
 
+    Dim as BSPNode Ptr bsp = createBSPNode(sc)
+
+    ' Add each object to the BSP tree:
+    For i as Integer = 0 To sc->ObjCount - 1
+      addToBSPNode(sc, bsp, sc->obj[i])
+    Next i
+    
+    destroyBSPNode(bsp)
+    
     ScreenLock
     ' TODO: BSP / Quadtree screen blanking:
-    Line sc->buffer, (0, 0)-(vx, vy), 0, BF
+    Line sc->buffer, (0, 0)-(vx, vy), 16, BF
     
     ' Loop through objects, placing them on the screen one by one:
     For i as Integer = 0 To sc->objCount - 1

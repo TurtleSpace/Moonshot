@@ -33,7 +33,6 @@ ob.axis[3].theta = 3.92699
 ob.x = 100
 ob.y = 100
 ob.color          = 7
-ob.scale          = 5
 sc_addObject(@sc, @ob)
 
 ' Start the scene:
